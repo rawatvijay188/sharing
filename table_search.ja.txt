@@ -1,37 +1,115 @@
-import React from "react";
-import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
+import "./styles.css";
+import Dropdown from "react-multilevel-dropdown";
 
-const TableSearch = ({ globalFilter, setGlobalFilter }) => {
+export default function App() {
+  const menus = [
+    {
+      name: "Documentary",
+      link: "/page/documentary",
+      type: "page"
+    },
+    {
+      name: "Movies",
+      link: "/page/movies",
+      type: "page",
+      children: [
+        {
+          name: "Hindi Movies",
+          link: "/pages/movies/hindi",
+          type: "page",
+          children: [
+            {
+              name: "Action Movies",
+              link: "/pages/movies/hindi/action",
+              type: "page",
+              children: [
+                {
+                  name: "2021",
+                  link: "/pages/movies/hindi/action/2021",
+                  type: "page"
+                }
+              ]
+            },
+            {
+              name: "Romantic Movies",
+              link: "/pages/movies/hindi/romantic",
+              type: "page",
+              children: [
+                {
+                  name: "Adult",
+                  link: "/pages/movies/hindi/romantic/adult",
+                  type: "page"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          name: "Telugu Movies",
+          link: "/pages/movies/telugu",
+          type: "page",
+          children: [
+            {
+              name: "Action Movies",
+              link: "/pages/movies/telugu/action",
+              type: "page"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "series",
+      link: "/page/series",
+      type: "page",
+      children: [
+        {
+          name: "Comedy",
+          link: "/pages/series/comedy",
+          type: "page"
+        }
+      ]
+    }
+  ];
+
   return (
-    <SearchBarContainer>
-      <SearchBar>
-        <StyledInput
-          value={globalFilter || ""}
-          onChange={(e) => {
-            setGlobalFilter(e.currentTarget.value || undefined); // Set undefined to remove the filter entirely
-          }}
-          placeholder="Search Report"
-        />
-      </SearchBar>
-    </SearchBarContainer>
+    <div className="App">
+      {menus.map((menu) => (
+        <Dropdown
+          title={menu.name}
+          menuClassName="text-14 py-8 px-5 my-0 mx-16 border-b-1 border-solid border-blue hover:border-black"
+        >
+          {menu.children &&
+            menu.children.map((item) => (
+              <Dropdown.Item>
+                {item.name}
+                {item.children &&
+                  item.children.map((submenu) => (
+                    <Dropdown.Submenu position="right">
+                      <Dropdown.Item>{submenu.name}</Dropdown.Item>
+                      {item.children &&
+                        item.children.map((submenu) => (
+                          <Dropdown.Submenu position="right">
+                            <Dropdown.Item>{submenu.name}</Dropdown.Item>
+                          </Dropdown.Submenu>
+                        ))}
+                    </Dropdown.Submenu>
+                  ))}
+              </Dropdown.Item>
+            ))}
+        </Dropdown>
+      ))}
+      {/* <Dropdown title="Dropdown title" position="right">
+        <Dropdown.Item>Item 1</Dropdown.Item>
+        <Dropdown.Item>
+          Item 2
+          <Dropdown.Submenu position="right">
+            <Dropdown.Item>Subitem 1</Dropdown.Item>
+            <Dropdown.Item>Subitem 2</Dropdown.Item>
+          </Dropdown.Submenu>
+        </Dropdown.Item>
+        <Dropdown.Item>Item 3</Dropdown.Item>
+      </Dropdown> */}
+    </div>
   );
-};
-
-export default TableSearch;
-
-const SearchBarContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-`;
-
-const SearchBar = styled.div`
-  display: flex;
-  width: 400px;
-`;
-
-const StyledInput = styled(TextField)`
-  font-family: "Untitled Sans", sans-serif;
-  height: 36px;
-`;
+}
