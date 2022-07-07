@@ -1,1 +1,0 @@
-https://nuc8xizi0h.execute-api.us-east-1.amazonaws.com/production
